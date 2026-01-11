@@ -1,11 +1,10 @@
-import React from "react";
-import type { FC, PropsWithChildren } from "react";
-import { BrowserRouter, Routes, Route } from "react-router";
-import Login from "@/pages/Login";
 import Home from "@/pages/Home";
+import Login from "@/pages/Login";
 import Setting from "@/pages/Setting";
 import Users from "@/pages/user/Users";
 import Layout from "@/templates/Layout";
+import type { FC, PropsWithChildren } from "react";
+import { BrowserRouter, Route, Routes } from "react-router";
 
 const AppRouter: FC<PropsWithChildren> = ({ children }) => {
   return (

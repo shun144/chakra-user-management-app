@@ -1,13 +1,16 @@
-import React, { useRef } from "react";
-import { Button, Flex, Heading, Input } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
-import { USER_DATA_IDS } from "@/constants/userData";
+import { ADMIN_USER_DATA_IDS, USER_DATA_IDS } from "@/constants/userData";
+import { useAuthContext } from "@/provider/auth/useAuthContext";
 import { parseNumber } from "@/utils/commonUtil";
+import { Button, Flex, Heading, Input } from "@chakra-ui/react";
+import { useRef } from "react";
 import { useNavigate } from "react-router";
 
 const Login = () => {
   const navigate = useNavigate();
   const userIdRef = useRef<HTMLInputElement>(null);
+  const { setIsAdmin } = useAuthContext();
+
   const onClickLogin = () => {
     if (!userIdRef.current?.value) return;
 
@@ -21,6 +24,19 @@ const Login = () => {
       });
       return;
     }
+
+    if (ADMIN_USER_DATA_IDS.has(enteredUserId)) {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+
+    toaster.create({
+      description: "ログインしました",
+      type: "success",
+      closable: true,
+    });
+
     navigate("/home");
   };
 

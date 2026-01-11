@@ -1,20 +1,18 @@
-import React from "react";
 import { USER_DATA } from "@/constants/userData";
+import CardWithDialog from "@/organisms/card/CardWithDialog";
 import { type UserDataType } from "@/types/UserDataType";
-import { Avatar, Button, Flex, Image } from "@chakra-ui/react";
-import Card from "@/organisms/Card";
+import { Flex } from "@chakra-ui/react";
 
 const Users = () => {
   return (
     <Flex
-      padding={"24px"}
+      padding={"48px"}
       flexWrap="wrap"
-      background={"red"}
-      // justifyContent="start"
-      // alignItems="start"
+      gap={4}
+      justifyContent={{ smDown: "center" }}
     >
       {USER_DATA.map((x: UserDataType) => (
-        <Card key={x.id} userName={x.username} name={x.name} />
+        <CardWithDialog key={x.id} userData={x} />
       ))}
     </Flex>
   );

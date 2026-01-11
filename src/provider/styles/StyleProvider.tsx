@@ -1,11 +1,11 @@
-import React from "react";
-import type { FC, PropsWithChildren } from "react";
-import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
+import { system } from "@/theme/theme";
+import { ChakraProvider } from "@chakra-ui/react";
 import { ThemeProvider } from "next-themes";
+import type { FC, PropsWithChildren } from "react";
 
 const StyleProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <ChakraProvider value={defaultSystem}>
+    <ChakraProvider value={system}>
       <ThemeProvider>{children}</ThemeProvider>
     </ChakraProvider>
   );

@@ -21,6 +21,7 @@ export const USER_DATA = [
       catchPhrase: "Multi-layered client-server neural-net",
       bs: "harness real-time e-markets",
     },
+    isAdmin: true,
   },
   {
     id: 2,
@@ -232,3 +233,7 @@ export const USER_DATA = [
 ];
 
 export const USER_DATA_IDS = new Set(USER_DATA.map(({ id }) => id));
+
+export const ADMIN_USER_DATA_IDS = new Set(
+  USER_DATA.filter((x) => x.isAdmin).map(({ id }) => id)
+);
