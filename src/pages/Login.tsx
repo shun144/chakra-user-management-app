@@ -1,73 +1,57 @@
-import { toaster } from "@/components/ui/toaster";
-import { ADMIN_USER_DATA_IDS, USER_DATA_IDS } from "@/constants/userData";
-import { useAuthContext } from "@/provider/auth/useAuthContext";
+import PrimaryButton from "@/atoms/button/PrimaryButton";
+import useAuth from "@/hooks/useAuth";
 import { parseNumber } from "@/utils/commonUtil";
-import { Button, Flex, Heading, Input } from "@chakra-ui/react";
-import { useRef } from "react";
-import { useNavigate } from "react-router";
+import {
+  Box,
+  Flex,
+  Heading,
+  Input,
+  Separator,
+  Spinner,
+  Stack,
+} from "@chakra-ui/react";
+import { useState } from "react";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const userIdRef = useRef<HTMLInputElement>(null);
-  const { setIsAdmin } = useAuthContext();
+  const [text, setText] = useState("");
+  const { login, isLoading } = useAuth();
 
   const onClickLogin = () => {
-    if (!userIdRef.current?.value) return;
+    if (text.length === 0) return;
+    const enteredUserId = parseNumber(text);
+    login(enteredUserId);
+  };
 
-    const enteredUserId = parseNumber(userIdRef.current.value);
-
-    if (!USER_DATA_IDS.has(enteredUserId)) {
-      toaster.create({
-        description: "存在しないユーザーIDです",
-        type: "error",
-        closable: true,
-      });
-      return;
-    }
-
-    if (ADMIN_USER_DATA_IDS.has(enteredUserId)) {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
-    }
-
-    toaster.create({
-      description: "ログインしました",
-      type: "success",
-      closable: true,
-    });
-
-    navigate("/home");
+  const onKeyEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key !== "Enter") return;
+    onClickLogin();
   };
 
   return (
-    <Flex height="100vh" alignItems="center" justifyContent="center">
-      <Flex
-        direction="column"
-        background="gray.100"
-        padding={12}
-        rounded={6}
-        width={400}
-      >
-        <Heading userSelect="none" mb={3} marginX="auto">
+    <Flex height="100vh" align="center" justify="center">
+      <Box bg="white" w="sm" p={4} borderRadius="md" shadow={"md"}>
+        <Heading as="h1" size={"lg"} userSelect="none" textAlign={"center"}>
           ユーザー管理アプリ
         </Heading>
-        <Input
-          ref={userIdRef}
-          placeholder="ユーザーID"
-          variant="outline"
-          mb={6}
-          type="text"
-        />
-        <Button
-          onClick={onClickLogin}
-          mb={6}
-          backgroundColor={"teal"}
-          _hover={{ opacity: 0.8 }}
-        >
-          ログイン
-        </Button>
-      </Flex>
+        <Separator my={4} />
+        <Stack spaceY={6} py={4} px={10}>
+          <Input
+            placeholder="ユーザーID"
+            variant="outline"
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={onKeyEnter}
+          />
+          <PrimaryButton
+            onClick={onClickLogin}
+            isLoading={isLoading}
+            isEmpty={text.length === 0}
+          >
+            {isLoading ? <Spinner /> : "ログイン"}
+          </PrimaryButton>
+        </Stack>
+      </Box>
     </Flex>
   );
 };

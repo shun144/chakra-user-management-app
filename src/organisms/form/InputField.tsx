@@ -1,6 +1,6 @@
-import React, { type FC, type ComponentProps, useRef, memo } from "react";
+import { useLoginUserContext } from "@/provider/auth/useLoginContext";
 import { Field, Input } from "@chakra-ui/react";
-import { useAuthContext } from "@/provider/auth/useAuthContext";
+import { type ComponentProps, type FC, memo, useRef } from "react";
 
 type Props = Pick<ComponentProps<"input">, "defaultValue" | "placeholder"> & {
   label: string;
@@ -8,7 +8,8 @@ type Props = Pick<ComponentProps<"input">, "defaultValue" | "placeholder"> & {
 
 const InputField: FC<Props> = ({ label, ...props }) => {
   const ref = useRef<HTMLInputElement>(null);
-  const { isAdmin } = useAuthContext();
+  const { loginUser } = useLoginUserContext();
+  const { isAdmin } = loginUser;
 
   return (
     <Field.Root>
@@ -17,6 +18,7 @@ const InputField: FC<Props> = ({ label, ...props }) => {
         {...props}
         ref={ref}
         readOnly={!isAdmin}
+        bg={isAdmin ? "white" : "gray.100"}
         caretColor={isAdmin ? "auto" : "transparent"}
       />
     </Field.Root>

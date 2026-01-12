@@ -13,6 +13,7 @@ const config = defineConfig({
   globalCss: {
     html: {
       bg: "gray.100",
+      color: "gray.800",
     },
   },
 });
